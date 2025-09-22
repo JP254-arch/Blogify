@@ -33,7 +33,7 @@ if (isset($_SESSION['role'])) {
     <!-- Desktop Right Side -->
     <div class="hidden md:flex space-x-6">
       <?php if (isset($_SESSION['user_id'])): ?>
-        <span class="text-gray-700">Hi <?= htmlspecialchars($_SESSION['username']); ?> 👋</span>
+        <span class="text-gray-700">Hi <?= htmlspecialchars($_SESSION['username']); ?> 👋 </span> |
         <a href="<?= BASE_URL ?>auth/logout.php" class="hover:text-red-600">Logout</a>
       <?php else: ?>
         <a href="<?= BASE_URL ?>auth/login.php" class="hover:text-blue-600">Login</a>

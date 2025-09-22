@@ -5,11 +5,13 @@ require_role('author');
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Author Dashboard - Blogify</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100">
   <?php include __DIR__ . '/../includes/header.php'; ?>
 
@@ -20,9 +22,13 @@ require_role('author');
     <div class="space-x-4">
       <a href="../posts/create.php" class="bg-green-600 text-white px-4 py-2 rounded">Create Post</a>
       <a href="<?= BASE_URL ?>blogs.php" class="bg-blue-600 text-white px-4 py-2 rounded">Posts</a>
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <a href="<?= BASE_URL ?>posts/dashboard.php" class="bg-yellow-600 text-white px-4 py-2 rounded">Manage Blogs</a>
+      <?php endif; ?>
     </div>
   </main>
 
   <?php include __DIR__ . '/../includes/footer.php'; ?>
 </body>
+
 </html>

@@ -14,9 +14,6 @@ require_once __DIR__ . "/../config/config.php";
       <a href="<?= BASE_URL ?>about.php" class="hover:text-blue-600">About</a>
       <a href="<?= BASE_URL ?>contact.php" class="hover:text-blue-600">Contact</a>
 
-      <?php if (isset($_SESSION['user_id'])): ?>
-        <a href="<?= BASE_URL ?>posts/dashboard.php" class="hover:text-blue-600">Profile</a>
-      <?php endif; ?>
     </nav>
 
     <!-- Desktop Right Side -->
