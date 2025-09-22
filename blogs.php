@@ -33,7 +33,7 @@ try {
         <?php foreach ($posts as $post): ?>
           <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
             <?php 
-              // ✅ Use image from DB if exists, otherwise fallback
+              
               $image = !empty($post['image']) 
                   ? htmlspecialchars($post['image']) 
                   : "https://source.unsplash.com/600x400/?blog";
