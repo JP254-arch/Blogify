@@ -4,11 +4,13 @@ declare(strict_types=1);
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
 
+session_start();
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/config.php';
 
 $message = '';
 
-// Flash message (e.g. after registration)
+// Flash (after registration)
 $flash = $_SESSION['flash'] ?? null;
 if ($flash) {
     unset($_SESSION['flash']);
@@ -24,17 +26,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = 'Invalid email format.';
     } else {
         try {
-            $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE email = ? LIMIT 1");
+            $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE email = ? LIMIT 1");
             $stmt->execute([$email]);
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['password'])) {
-                // Successful login
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
 
-                // ✅ Correct redirect using BASE_URL
-                header("Location: " . BASE_URL . "posts/dashboard.php");
+                // Redirect based on role
+                if ($user['role'] === 'admin') {
+                    header("Location: " . BASE_URL . "admin/dashboard.php");
+                } elseif ($user['role'] === 'author') {
+                    header("Location: " . BASE_URL . "author/dashboard.php");
+                } elseif ($user['role'] === 'reader') {
+                    header("Location: " . BASE_URL . "reader/dashboard.php");
+                } else {
+                    // fallback
+                    header("Location: " . BASE_URL . "index.php");
+                }
                 exit;
             } else {
                 $message = 'Invalid email or password.';

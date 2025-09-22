@@ -16,8 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     $password_confirm = $_POST['password_confirm'] ?? '';
+    $role = $_POST['role'] ?? 'reader'; // default reader
 
-    // Basic validation
+    // Validation
     if ($username === '' || $email === '' || $password === '' || $password_confirm === '') {
         $message = 'Please fill in all fields.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -28,17 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = 'Password must be at least 6 characters.';
     } else {
         try {
-            // Check duplicate email or username
+            // Check duplicate
             $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? OR username = ? LIMIT 1");
             $stmt->execute([$email, $username]);
 
             if ($stmt->fetch()) {
                 $message = 'Email or username already registered.';
             } else {
-                // Insert user
                 $hash = password_hash($password, PASSWORD_DEFAULT);
-                $insert = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-                $insert->execute([$username, $email, $hash]);
+                $insert = $conn->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)");
+                $insert->execute([$username, $email, $hash, $role]);
 
                 $_SESSION['flash'] = 'Registration successful. You can now log in.';
                 header('Location: ' . BASE_URL . 'auth/login.php');
@@ -73,6 +73,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="email" name="email" placeholder="Email" required class="w-full border p-3 rounded" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
       <input type="password" name="password" placeholder="Password" required class="w-full border p-3 rounded">
       <input type="password" name="password_confirm" placeholder="Confirm password" required class="w-full border p-3 rounded">
+
+      <!-- Role selection -->
+      <label class="block">Register as:</label>
+      <select name="role" class="w-full border p-3 rounded">
+        <option value="reader" <?= (($_POST['role'] ?? '') === 'reader') ? 'selected' : '' ?>>Reader</option>
+        <option value="author" <?= (($_POST['role'] ?? '') === 'author') ? 'selected' : '' ?>>Author</option>
+      </select>
+
       <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">Register</button>
     </form>
 

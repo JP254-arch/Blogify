@@ -44,17 +44,17 @@ $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="grid md:grid-cols-3 gap-8">
       <?php foreach ($posts as $post): ?>
         <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
-          <img src="<?= $post['image'] ?: 'https://source.unsplash.com/800x400/?blog,writing' ?>" 
-               alt="Blog" 
-               class="w-full h-48 object-cover">
+          <img src="<?= $post['image'] ?: 'https://source.unsplash.com/800x400/?blog,writing' ?>"
+            alt="Blog"
+            class="w-full h-48 object-cover">
           <div class="p-6">
             <h4 class="font-bold text-xl mb-2"><?= htmlspecialchars($post['title']) ?></h4>
             <p class="text-gray-600 mb-4">
               <?= substr(htmlspecialchars($post['content']), 0, 80) ?>...
             </p>
-            <a href="single-blog.php?id=<?= $post['id'] ?>" 
-               class="text-blue-600 font-semibold hover:underline">
-               Read More →
+            <a href="single-blog.php?id=<?= $post['id'] ?>"
+              class="text-blue-600 font-semibold hover:underline">
+              Read More →
             </a>
           </div>
         </div>
@@ -70,4 +70,5 @@ $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </footer>
 
 </body>
+
 </html>
